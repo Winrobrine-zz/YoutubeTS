@@ -5,10 +5,9 @@ html
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title YoutubeTS
+        link(rel="stylesheet", href="/css/main.css")
     body
-        header
-            h1 YoutubeTS
+        include partials/header
         main
             block content
-        footer
-            span &copy; YoutubeTS
+        include partials/footer
