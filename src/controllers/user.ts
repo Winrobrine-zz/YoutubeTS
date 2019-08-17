@@ -2,6 +2,14 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import routes from "../routes";
 
+export const getLogin = (req: Request, res: Response) => {
+    res.render("login", { title: "Login" });
+};
+
+export const postLogin = (req: Request, res: Response) => {
+    res.redirect(routes.index);
+};
+
 export const getSignup = (req: Request, res: Response) =>
     res.render("signup", { title: "Signup" });
 
@@ -16,8 +24,6 @@ export const postSignup = (req: Request, res: Response) => {
     res.redirect(routes.index);
 };
 
-export const login = (req: Request, res: Response) =>
-    res.render("login", { title: "Login" });
 export const logout = (req: Request, res: Response) => res.send("Logout");
 export const userDetail = (req: Request, res: Response) =>
     res.send("User Detail");

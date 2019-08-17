@@ -9,6 +9,9 @@ const router = express.Router();
 
 router.get(routes.index, videoController.home);
 
+router.get(routes.login, userController.getLogin);
+router.post(routes.login, userController.postLogin);
+
 router.get(routes.signup, userController.getSignup);
 router.post(
     routes.signup,
@@ -34,7 +37,6 @@ router.post(
     userController.postSignup
 );
 
-router.get(routes.login, userController.login);
 router.get(routes.logout, userController.logout);
 router.get(
     routes.search,
