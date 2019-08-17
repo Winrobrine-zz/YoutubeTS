@@ -6,6 +6,7 @@ import path from "path";
 import "./utils/logger";
 
 import routes from "./routes";
+import accountRouter from "./routes/account";
 import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
 import videoRouter from "./routes/video";
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(routes.account, accountRouter);
 app.use(routes.index, homeRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
