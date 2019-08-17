@@ -4,7 +4,9 @@ import helmet from "helmet";
 import logger from "morgan";
 import "./utils/logger";
 
+import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
+import videoRouter from "./routes/video";
 
 const app = express();
 
@@ -14,10 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Hello, world!");
-});
-
+app.use("/", homeRouter);
 app.use("/user", userRouter);
+app.use("/video", videoRouter);
 
 export default app;
