@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 
+import { videos } from "../video";
+
 export const home = (req: Request, res: Response) =>
-    res.render("home", { title: "Home" });
+    res.render("home", { title: "Home", videos });
 
 export const search = (req: Request, res: Response) => {
     const {
@@ -11,11 +13,11 @@ export const search = (req: Request, res: Response) => {
     res.render("search", { title: "Search", searchingBy });
 };
 
-export const videos = (req: Request, res: Response) => res.send("Videos");
-export const upload = (req: Request, res: Response) => res.send("Upload");
+export const upload = (req: Request, res: Response) =>
+    res.render("videos/upload", { title: "Upload" });
 export const videoDetail = (req: Request, res: Response) =>
     res.send("Video Detail");
-export const editVideo = (req: Request, res: Response) =>
-    res.send("Edit Video");
-export const deleteVideo = (req: Request, res: Response) =>
-    res.send("Delete Video");
+export const edit = (req: Request, res: Response) =>
+    res.render("videos/edit", { title: "Edit" });
+export const remove = (req: Request, res: Response) =>
+    res.render("videos/delete", { title: "Delete" });
