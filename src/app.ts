@@ -4,6 +4,7 @@ import helmet from "helmet";
 import logger from "morgan";
 import "./utils/logger";
 
+import routes from "./routes";
 import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
 import videoRouter from "./routes/video";
@@ -16,8 +17,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
-app.use("/", homeRouter);
-app.use("/user", userRouter);
-app.use("/video", videoRouter);
+app.use(routes.index, homeRouter);
+app.use(routes.users, userRouter);
+app.use(routes.videos, videoRouter);
 
 export default app;
