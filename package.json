@@ -23,6 +23,7 @@
         "body-parser": "^1.19.0",
         "errorhandler": "^1.5.1",
         "express": "^4.17.1",
+        "express-validator": "^6.1.1",
         "helmet": "^3.20.0",
         "morgan": "^1.9.1",
         "pug": "^2.0.4",

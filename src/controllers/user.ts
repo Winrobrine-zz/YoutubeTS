@@ -1,7 +1,21 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
+import routes from "../routes";
 
-export const signup = (req: Request, res: Response) =>
+export const getSignup = (req: Request, res: Response) =>
     res.render("signup", { title: "Signup" });
+
+export const postSignup = (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.redirect(routes.signup);
+    }
+
+    res.redirect(routes.index);
+};
+
 export const login = (req: Request, res: Response) =>
     res.render("login", { title: "Login" });
 export const logout = (req: Request, res: Response) => res.send("Logout");
