@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    .form__container
+        form(action=routes.login, method="post")
+            input(type="email", name="email", placeholder="Email")
+            input(type="password", name="password", placeholder="Password")
+            input(type="submit",value="Login")
+        .social-login
+            button.social-login--github
+                span
+                    i.fab.fa-github 
+                |Sign in with Github
+            button.social-login--facebook
+                span
+                    i.fab.fa-facebook 
+                |Sign in with Facebook 

@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 
-export const signup = (req: Request, res: Response) => res.send("Signup");
-export const login = (req: Request, res: Response) => res.send("Login");
+export const signup = (req: Request, res: Response) =>
+    res.render("signup", { title: "Signup" });
+export const login = (req: Request, res: Response) =>
+    res.render("login", { title: "login" });
 export const logout = (req: Request, res: Response) => res.send("Logout");
 export const users = (req: Request, res: Response) => res.send("Users");
 export const userDetail = (req: Request, res: Response) =>
