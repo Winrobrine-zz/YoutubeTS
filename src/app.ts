@@ -4,6 +4,8 @@ import helmet from "helmet";
 import logger from "morgan";
 import "./utils/logger";
 
+import userRouter from "./routes/user";
+
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
@@ -15,5 +17,7 @@ app.use(logger("dev"));
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello, world!");
 });
+
+app.use("/user", userRouter);
 
 export default app;
