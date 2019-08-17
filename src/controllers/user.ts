@@ -24,11 +24,22 @@ export const postSignup = (req: Request, res: Response) => {
     res.redirect(routes.index);
 };
 
-export const logout = (req: Request, res: Response) => res.send("Logout");
-export const userDetail = (req: Request, res: Response) =>
+export const logout = (req: Request, res: Response) => {
+    res.redirect(routes.index);
+};
+
+export const userDetail = (req: Request, res: Response) => {
     res.send("User Detail");
-export const account = (req: Request, res: Response) => res.send("Account");
-export const profile = (req: Request, res: Response) =>
+};
+
+export const account = (req: Request, res: Response) => {
+    res.send("Account");
+};
+
+export const profile = (req: Request, res: Response) => {
     res.render("account/profile", { title: "Profile" });
-export const password = (req: Request, res: Response) =>
+};
+
+export const password = (req: Request, res: Response) => {
     res.render("account/password", { title: "Password" });
+};
