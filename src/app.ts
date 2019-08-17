@@ -12,6 +12,7 @@ import videoRouter from "./routes/video";
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
+app.set("view engine", "pug");
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
