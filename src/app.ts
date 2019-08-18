@@ -5,7 +5,7 @@ import helmet from "helmet";
 import logger from "morgan";
 import mongoose from "mongoose";
 import path from "path";
-import "./utils/logger";
+import * as secrets from "./utils/secrets";
 
 import routes from "./routes";
 import accountRouter from "./routes/account";
@@ -17,7 +17,7 @@ const app = express();
 
 mongoose.Promise = bluebird;
 mongoose
-    .connect("mongodb://localhost:27017/youtubets", { useNewUrlParser: true })
+    .connect(secrets.MONGODB_URI, { useNewUrlParser: true })
     .then(() => {})
     .catch(err => {
         console.log(
