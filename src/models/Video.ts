@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { CommentDocument } from "./Comment";
 
 export type VideoDocument = mongoose.Document & {
     src: string;
@@ -6,7 +7,7 @@ export type VideoDocument = mongoose.Document & {
     description: string;
     views: number;
     createdAt: Date;
-    //comments:
+    comments: CommentDocument["_id"];
 };
 
 const videoSchema = new mongoose.Schema({
