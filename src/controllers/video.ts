@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import routes from "../routes";
-
-import { videos } from "../video";
+import { Video } from "../models/Video";
+import { removeListener } from "cluster";
 
 export const home = (req: Request, res: Response) => {
-    res.render("home", { title: "Home", videos });
+    Video.find()
+        .then(videos => {
+            res.render("home", { title: "Home", videos });
+        })
+        .catch(err => {
+            console.log(err);
+            res.render("home", { title: "Home", videos: [] });
+        });
 };
 
 export const search = (req: Request, res: Response) => {
@@ -18,7 +25,14 @@ export const search = (req: Request, res: Response) => {
 
     const keywords: string = req.query.keywords;
 
-    res.render("search", { title: "Search", keywords, videos });
+    Video.find({ title: { $regex: keywords, $options: "i" } })
+        .then(videos => {
+            res.render("search", { title: "Search", keywords, videos });
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect(routes.index);
+        });
 };
 
 export const getUpload = (req: Request, res: Response) => {
