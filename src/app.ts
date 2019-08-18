@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import bluebird from "bluebird";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import logger from "morgan";
+import mongoose from "mongoose";
 import path from "path";
 import "./utils/logger";
 
@@ -12,6 +14,16 @@ import userRouter from "./routes/user";
 import videoRouter from "./routes/video";
 
 const app = express();
+
+mongoose.Promise = bluebird;
+mongoose
+    .connect("mongodb://localhost:27017/youtubets", { useNewUrlParser: true })
+    .then(() => {})
+    .catch(err => {
+        console.log(
+            `MongoDB connection error. Please make sure MongoDB is running. ${err}`
+        );
+    });
 
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "../views"));
