@@ -68,7 +68,16 @@ export const postUpload = (req: Request, res: Response) => {
 };
 
 export const videoDetail = (req: Request, res: Response) => {
-    res.send("Video Detail");
+    const id = (req.params as any).id;
+
+    Video.findById(id)
+        .then(video => {
+            res.render("videos/videoDetail", { title: "Video Detail", video });
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect(routes.index);
+        });
 };
 
 export const edit = (req: Request, res: Response) => {

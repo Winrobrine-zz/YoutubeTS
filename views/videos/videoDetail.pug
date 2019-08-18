@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    .video__player
+        video(src=video.src)
+    .video__info
+        a(href=routes.editVideo) Edit video
+        h5.video__title=video.title
+        span.video__views=video.views
+        p.video__description !{video.description.replace(/\n/g, "<br/>")}
