@@ -10,8 +10,9 @@ export const postLogin = (req: Request, res: Response) => {
     res.redirect(routes.index);
 };
 
-export const getSignup = (req: Request, res: Response) =>
+export const getSignup = (req: Request, res: Response) => {
     res.render("signup", { title: "Signup" });
+};
 
 export const postSignup = (req: Request, res: Response) => {
     const errors = validationResult(req);

@@ -3,12 +3,14 @@ import routes from "../routes";
 
 import * as videoController from "../controllers/video";
 import { check } from "express-validator";
+import { videoUpload } from "../config/multer";
 
 const router = express.Router();
 
 router.get(routes.upload, videoController.getUpload);
 router.post(
     routes.upload,
+    videoUpload.single("video"),
     [
         check("title", "Title cannot be blank")
             .not()

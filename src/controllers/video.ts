@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import routes from "../routes";
 import { Video } from "../models/Video";
-import { removeListener } from "cluster";
+import { MulterOutFile } from "multer-blob-storage";
 
 export const home = (req: Request, res: Response) => {
     Video.find()
@@ -44,10 +44,27 @@ export const postUpload = (req: Request, res: Response) => {
 
     if (!errors.isEmpty()) {
         console.log(errors.array());
-        return res.redirect(routes.upload);
+        return res.redirect(routes.videos + routes.upload);
     }
 
-    res.redirect(routes.videos + routes.videoDetail("324393"));
+    const title: string = req.body.title;
+    const description: string = req.body.description;
+    console.log(title, description);
+    const file = req.file as MulterOutFile;
+
+    new Video({
+        src: file.url,
+        title,
+        description
+    })
+        .save()
+        .then(newVideo => {
+            res.redirect(routes.videos + routes.videoDetail(newVideo.id));
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect(routes.videos + routes.upload);
+        });
 };
 
 export const videoDetail = (req: Request, res: Response) => {
