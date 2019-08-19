@@ -6,7 +6,7 @@ import { MulterOutFile } from "multer-blob-storage";
 
 export const home = async (req: Request, res: Response) => {
     try {
-        const videos = await Video.find();
+        const videos = await Video.find().sort({ _id: -1 });
         res.render("home", { title: "Home", videos });
     } catch (err) {
         console.log(err);
@@ -27,7 +27,7 @@ export const search = async (req: Request, res: Response) => {
     try {
         const videos = await Video.find({
             title: { $regex: keywords, $options: "i" }
-        });
+        }).sort({ _id: -1 });
         res.render("search", { title: "Search", keywords, videos });
     } catch (err) {
         console.log(err);
