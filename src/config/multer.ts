@@ -14,5 +14,6 @@ export const videoUpload = multer({
         Object.assign(azureStorage, {
             containerName: "videos"
         })
-    )
+    ),
+    fileFilter: (req, file, cb) => cb(null, file.mimetype.startsWith("video"))
 });

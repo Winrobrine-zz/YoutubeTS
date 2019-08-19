@@ -19,8 +19,19 @@ router.post(
     videoController.postUpload
 );
 
-router.get(routes.videoDetail(), videoController.videoDetail);
-router.get(routes.editVideo(), videoController.edit);
+router.get(routes.videoDetail(), videoController.detail);
+
+router.get(routes.editVideo(), videoController.getEdit);
+router.post(
+    routes.editVideo(),
+    [
+        check("title", "Title cannot be blank")
+            .not()
+            .isEmpty()
+    ],
+    videoController.postEdit
+);
+
 router.get(routes.deleteVideo(), videoController.remove);
 
 export default router;
