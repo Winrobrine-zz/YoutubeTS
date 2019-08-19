@@ -73,7 +73,7 @@ export const postUpload = async (req: Request, res: Response) => {
 export const detail = async (req: Request, res: Response) => {
     try {
         const video = await Video.findById(req.params.id);
-        res.render("videos/detail", { title: "Video Detail", video });
+        res.render("videos/detail", { title: video.title, video });
     } catch (err) {
         console.log(err);
         res.redirect(routes.index);
@@ -113,6 +113,12 @@ export const postEdit = async (req: Request, res: Response) => {
     }
 };
 
-export const remove = (req: Request, res: Response) => {
-    res.render("videos/delete", { title: "Delete" });
+export const remove = async (req: Request, res: Response) => {
+    try {
+        await Video.findByIdAndDelete(req.params.id);
+        res.redirect(routes.index);
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.videos + routes.videoDetail(req.params.id));
+    }
 };
