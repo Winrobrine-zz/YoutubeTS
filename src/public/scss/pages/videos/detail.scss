@@ -1,0 +1,42 @@
+.video-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .video-detail__player {
+        width: 100%;
+        .video-js {
+            width: 100%;
+        }
+    }
+    .video-detail__info {
+        width: 100%;
+        max-width: 850px;
+        margin-top: 25px;
+        button {
+            width: 100px;
+            margin-bottom: 25px;
+        }
+        .video-detail__title,
+        .video-detail__description,
+        .video-detail__views {
+            display: block;
+            margin-bottom: 15px;
+        }
+        .video-detail__title {
+            font-size: 22px;
+            font-weight: 300;
+        }
+        .video-detail__description {
+            font-size: 16px;
+        }
+        .video-detail__views {
+            font-size: 14px;
+        }
+    }
+    .video-detail__comments {
+        margin-top: 25px;
+        .video-detail__comments-number {
+            font-size: 18px;
+        }
+    }
+}
