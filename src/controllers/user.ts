@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import routes from "../routes";
+import { User } from "../models/User";
+import "../config/passport";
 
 export const getLogin = (req: Request, res: Response) => {
     res.render("login", { title: "Login" });
@@ -14,7 +16,7 @@ export const getSignup = (req: Request, res: Response) => {
     res.render("signup", { title: "Signup" });
 };
 
-export const postSignup = (req: Request, res: Response) => {
+export const postSignup = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -22,7 +24,17 @@ export const postSignup = (req: Request, res: Response) => {
         return res.redirect(routes.signup);
     }
 
-    res.redirect(routes.index);
+    const username: string = req.body.username;
+    const email: string = req.body.email;
+    const password: string = req.body.password;
+
+    try {
+        await User.register(new User({ username, email }), password);
+        res.redirect(routes.index);
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.signup);
+    }
 };
 
 export const logout = (req: Request, res: Response) => {

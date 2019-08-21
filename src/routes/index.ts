@@ -16,12 +16,9 @@ router.get(routes.signup, userController.getSignup);
 router.post(
     routes.signup,
     [
-        check(
-            "username",
-            "Username must be at least 4 characters long"
-        ).isLength({
-            min: 4
-        }),
+        check("username", "Username cannot be blank")
+            .not()
+            .isEmpty(),
         check("email", "Email is not valid").isEmail(),
         check(
             "password",
