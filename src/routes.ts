@@ -20,6 +20,8 @@ const DELETE_VIDEO = "/:id/delete";
 const AUTH = "/auth";
 const GITHUB = "/github";
 const GITHUB_CALLBACK = "/github/callback";
+const GOOGLE = "/google";
+const GOOGLE_CALLBACK = "/google/callback";
 
 const routes = {
     index: INDEX,
@@ -51,7 +53,9 @@ const routes = {
     },
     auth: AUTH,
     github: GITHUB,
-    githubCallback: GITHUB_CALLBACK
+    githubCallback: GITHUB_CALLBACK,
+    google: GOOGLE,
+    googleCallback: GOOGLE_CALLBACK
 };
 
 export default routes;

@@ -6,7 +6,7 @@ export type UserDocument = mongoose.PassportLocalDocument & {
     email: string;
     avatarUrl: string;
     githubId: string;
-    facebookId: string;
+    googleId: string;
 };
 
 const userSchema = new mongoose.Schema({
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     email: String,
     avatarUrl: String,
     githubId: String,
-    facebookId: String
+    googleId: String
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });

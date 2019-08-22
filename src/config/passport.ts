@@ -1,11 +1,13 @@
 import passport from "passport";
 import passportGithub from "passport-github";
+import passportGoogle from "passport-google-oauth20";
 
 import { User } from "../models/User";
 import { Request, Response, NextFunction } from "express";
 import routes from "../routes";
 
 const GithubStrategy = passportGithub.Strategy;
+const GoogleStrategy = passportGoogle.Strategy;
 
 passport.use(User.createStrategy());
 
@@ -63,10 +65,75 @@ passport.use(
                     }
 
                     const user = await new User({
-                        username: profile.username,
+                        username: profile.displayName,
                         email: profile.emails[0].value,
                         avatarUrl: profile.photos[0].value,
                         githubId: profile.id
+                    }).save();
+                    done(null, user);
+                } catch (err) {
+                    done(err);
+                }
+            }
+        }
+    )
+);
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: routes.auth + routes.googleCallback,
+            passReqToCallback: true
+        },
+        async (req, accessToken, refreshToken, profile, done) => {
+            if (req.user) {
+                try {
+                    const userExist = await User.exists({
+                        googleId: profile.id
+                    });
+                    if (userExist) {
+                        console.log(
+                            "There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account."
+                        );
+                        return done();
+                    }
+
+                    const user = await User.findById(req.user.id);
+                    user.googleId = profile.id;
+                    user.avatarUrl = user.avatarUrl || profile.photos[0].value;
+                    await user.save();
+
+                    console.log("Google account has been linked.");
+                    done(null, user);
+                } catch (err) {
+                    done(err);
+                }
+            } else {
+                try {
+                    const existingUser = await User.findOne({
+                        googleId: profile.id
+                    });
+                    if (existingUser) {
+                        return done(null, existingUser);
+                    }
+
+                    const emailExist = await User.exists({
+                        email: profile.emails[0].value
+                    });
+                    if (emailExist) {
+                        console.log(
+                            "There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings."
+                        );
+                        return done();
+                    }
+
+                    const user = await new User({
+                        username: profile.displayName,
+                        email: profile.emails[0].value,
+                        avatarUrl: profile.photos[0].value,
+                        googleId: profile.id
                     }).save();
                     done(null, user);
                 } catch (err) {

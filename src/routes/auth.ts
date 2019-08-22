@@ -12,5 +12,16 @@ router.get(
         successRedirect: routes.index
     })
 );
+router.get(
+    routes.google,
+    passport.authenticate("google", { scope: ["profile", "email"] })
+);
+router.get(
+    routes.googleCallback,
+    passport.authenticate("google", {
+        failureRedirect: routes.login,
+        successRedirect: routes.index
+    })
+);
 
 export default router;

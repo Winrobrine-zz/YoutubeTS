@@ -12,7 +12,8 @@ block content
                     span
                         i.fab.fa-github 
                     |Sign in with Github
-            button.social-login--facebook
-                span
-                    i.fab.fa-facebook 
-                |Sign in with Facebook 
+            button.social-login--google
+                a(href=routes.auth + routes.google)
+                    span
+                        i.fab.fa-google
+                    |Sign in with Google
