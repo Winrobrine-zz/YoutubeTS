@@ -35,7 +35,7 @@ passport.use(
 
                     const user = await User.findById(req.user.id);
                     user.githubId = profile.id;
-                    user.avatarUrl = user.avatarUrl || profile.profileUrl;
+                    user.avatarUrl = user.avatarUrl || profile.photos[0].value;
                     await user.save();
 
                     console.log("Github account has been linked.");
@@ -65,7 +65,7 @@ passport.use(
                     const user = await new User({
                         username: profile.username,
                         email: profile.emails[0].value,
-                        avatarUrl: profile.profileUrl,
+                        avatarUrl: profile.photos[0].value,
                         githubId: profile.id
                     }).save();
                     done(null, user);

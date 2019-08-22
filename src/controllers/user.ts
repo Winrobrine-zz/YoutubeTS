@@ -57,7 +57,7 @@ export const userDetail = (req: Request, res: Response) => {
 };
 
 export const account = (req: Request, res: Response) => {
-    res.send("Account");
+    res.render("users/detail", { title: "Account" });
 };
 
 export const profile = (req: Request, res: Response) => {
