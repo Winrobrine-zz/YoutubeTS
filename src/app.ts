@@ -11,6 +11,7 @@ import * as secrets from "./utils/secrets";
 
 import routes from "./routes";
 import accountRouter from "./routes/account";
+import authRouter from "./routes/auth";
 import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
 import videoRouter from "./routes/video";
@@ -56,6 +57,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(routes.account, accountRouter);
+app.use(routes.auth, authRouter);
 app.use(routes.index, homeRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);

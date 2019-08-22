@@ -8,9 +8,10 @@ block content
             input(type="submit",value="Login")
         .social-login
             button.social-login--github
-                span
-                    i.fab.fa-github 
-                |Sign in with Github
+                a(href=routes.auth + routes.github)
+                    span
+                        i.fab.fa-github 
+                    |Sign in with Github
             button.social-login--facebook
                 span
                     i.fab.fa-facebook 
