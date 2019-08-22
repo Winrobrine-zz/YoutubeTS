@@ -2,23 +2,19 @@ import express from "express";
 import routes from "../routes";
 
 import * as userController from "../controllers/user";
-import * as passportConfig from "../config/passport";
+import { ensureLoggedIn } from "connect-ensure-login";
 
 const router = express.Router();
 
-router.get(
-    routes.index,
-    passportConfig.isAuthenticated,
-    userController.account
-);
+router.get(routes.index, ensureLoggedIn(routes.login), userController.account);
 router.get(
     routes.profile,
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     userController.profile
 );
 router.get(
     routes.password,
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     userController.password
 );
 

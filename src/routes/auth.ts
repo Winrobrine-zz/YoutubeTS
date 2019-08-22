@@ -9,7 +9,7 @@ router.get(
     routes.githubCallback,
     passport.authenticate("github", {
         failureRedirect: routes.login,
-        successRedirect: routes.index
+        successReturnToOrRedirect: routes.index
     })
 );
 router.get(
@@ -20,7 +20,7 @@ router.get(
     routes.googleCallback,
     passport.authenticate("google", {
         failureRedirect: routes.login,
-        successRedirect: routes.index
+        successReturnToOrRedirect: routes.index
     })
 );
 

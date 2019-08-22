@@ -13,7 +13,7 @@ export const getLogin = (req: Request, res: Response) => {
 
 export const postLogin = passport.authenticate("local", {
     failureRedirect: routes.login,
-    successRedirect: routes.index
+    successReturnToOrRedirect: routes.index
 });
 
 export const getSignup = (req: Request, res: Response) => {

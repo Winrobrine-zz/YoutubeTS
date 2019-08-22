@@ -4,18 +4,18 @@ import routes from "../routes";
 import * as videoController from "../controllers/video";
 import { check } from "express-validator";
 import { videoUpload } from "../config/multer";
-import * as passportConfig from "../config/passport";
+import { ensureLoggedIn } from "connect-ensure-login";
 
 const router = express.Router();
 
 router.get(
     routes.upload,
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     videoController.getUpload
 );
 router.post(
     routes.upload,
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     videoUpload.single("video"),
     [
         check("title", "Title cannot be blank")
@@ -29,7 +29,7 @@ router.get(routes.videoDetail(), videoController.detail);
 
 router.get(
     routes.editVideo(),
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     videoController.getEdit
 );
 router.post(
@@ -44,7 +44,7 @@ router.post(
 
 router.get(
     routes.deleteVideo(),
-    passportConfig.isAuthenticated,
+    ensureLoggedIn(routes.login),
     videoController.remove
 );
 
