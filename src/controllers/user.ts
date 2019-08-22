@@ -48,6 +48,7 @@ export const postSignup = async (
 };
 
 export const logout = (req: Request, res: Response) => {
+    req.logout();
     res.redirect(routes.index);
 };
 
