@@ -52,8 +52,15 @@ export const logout = (req: Request, res: Response) => {
     res.redirect(routes.index);
 };
 
-export const userDetail = (req: Request, res: Response) => {
-    res.send("User Detail");
+export const userDetail = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (user) res.render("users/detail", { title: "User Detail", user });
+        res.redirect(routes.index);
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.index);
+    }
 };
 
 export const account = (req: Request, res: Response) => {
