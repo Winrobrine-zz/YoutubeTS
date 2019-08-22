@@ -17,10 +17,63 @@ passport.use(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "/auth/github/callback",
+            callbackURL: routes.auth + routes.githubCallback,
             passReqToCallback: true
         },
-        (req, accessToken, refreshToken, profile, done) => {}
+        async (req, accessToken, refreshToken, profile, done) => {
+            if (req.user) {
+                try {
+                    const userExist = await User.exists({
+                        githubId: profile.id
+                    });
+                    if (userExist) {
+                        console.log(
+                            "There is already a Github account that belongs to you. Sign in with that account or delete it, then link it with your current account."
+                        );
+                        return done();
+                    }
+
+                    const user = await User.findById(req.user.id);
+                    user.githubId = profile.id;
+                    user.avatarUrl = user.avatarUrl || profile.profileUrl;
+                    await user.save();
+
+                    console.log("Github account has been linked.");
+                    done(null, user);
+                } catch (err) {
+                    done(err);
+                }
+            } else {
+                try {
+                    const existingUser = await User.findOne({
+                        githubId: profile.id
+                    });
+                    if (existingUser) {
+                        return done(null, existingUser);
+                    }
+
+                    const emailExist = await User.exists({
+                        email: profile.emails[0].value
+                    });
+                    if (emailExist) {
+                        console.log(
+                            "There is already an account using this email address. Sign in to that account and link it with Github manually from Account Settings."
+                        );
+                        return done();
+                    }
+
+                    const user = await new User({
+                        username: profile.username,
+                        email: profile.emails[0].value,
+                        avatarUrl: profile.profileUrl,
+                        githubId: profile.id
+                    }).save();
+                    done(null, user);
+                } catch (err) {
+                    done(err);
+                }
+            }
+        }
     )
 );
 
