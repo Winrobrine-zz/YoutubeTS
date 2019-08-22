@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
+import passport from "passport";
 import routes from "../routes";
 import { User } from "../models/User";
 import "../config/passport";
@@ -8,15 +9,20 @@ export const getLogin = (req: Request, res: Response) => {
     res.render("login", { title: "Login" });
 };
 
-export const postLogin = (req: Request, res: Response) => {
-    res.redirect(routes.index);
-};
+export const postLogin = passport.authenticate("local", {
+    failureRedirect: routes.login,
+    successRedirect: routes.index
+});
 
 export const getSignup = (req: Request, res: Response) => {
     res.render("signup", { title: "Signup" });
 };
 
-export const postSignup = async (req: Request, res: Response) => {
+export const postSignup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -30,7 +36,7 @@ export const postSignup = async (req: Request, res: Response) => {
 
     try {
         await User.register(new User({ username, email }), password);
-        res.redirect(routes.index);
+        next();
     } catch (err) {
         console.log(err);
         res.redirect(routes.signup);

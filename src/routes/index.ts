@@ -4,6 +4,7 @@ import routes from "../routes";
 import * as videoController from "../controllers/video";
 import * as userController from "../controllers/user";
 import { check, sanitize } from "express-validator";
+import { User } from "../models/User";
 
 const router = express.Router();
 
@@ -19,6 +20,10 @@ router.post(
         check("username", "Username cannot be blank")
             .not()
             .isEmpty(),
+        check("username", "Username already exists").custom(async value => {
+            const isExist = await User.exists({ username: value });
+            if (isExist) return Promise.reject();
+        }),
         check("email", "Email is not valid").isEmail(),
         check(
             "password",
@@ -31,7 +36,8 @@ router.post(
         ),
         sanitize("email").normalizeEmail({ gmail_remove_dots: false })
     ],
-    userController.postSignup
+    userController.postSignup,
+    userController.postLogin
 );
 
 router.get(routes.logout, userController.logout);

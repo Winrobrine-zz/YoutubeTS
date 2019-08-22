@@ -3,7 +3,9 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import logger from "morgan";
 import mongoose from "mongoose";
+import passport from "passport";
 import path from "path";
+import session from "express-session";
 import * as secrets from "./utils/secrets";
 
 import routes from "./routes";
@@ -30,8 +32,17 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
+app.use(
+    session({
+        resave: true,
+        saveUninitialized: true,
+        secret: secrets.SESSION_SECRET
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use((req, res, next) => {
-    res.locals.user = false;
+    res.locals.user = req.user;
     res.locals.routes = routes;
     next();
 });
