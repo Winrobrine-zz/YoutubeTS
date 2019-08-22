@@ -6,6 +6,8 @@ import { User } from "../models/User";
 import "../config/passport";
 
 export const getLogin = (req: Request, res: Response) => {
+    if (req.user) return res.redirect(routes.index);
+
     res.render("login", { title: "Login" });
 };
 
@@ -15,6 +17,8 @@ export const postLogin = passport.authenticate("local", {
 });
 
 export const getSignup = (req: Request, res: Response) => {
+    if (req.user) return res.redirect(routes.index);
+
     res.render("signup", { title: "Signup" });
 };
 

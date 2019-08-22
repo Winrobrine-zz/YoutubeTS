@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import logger from "morgan";
+import mongo from "connect-mongo";
 import mongoose from "mongoose";
 import passport from "passport";
 import path from "path";
@@ -13,6 +14,8 @@ import accountRouter from "./routes/account";
 import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
 import videoRouter from "./routes/video";
+
+const MongoStore = mongo(session);
 
 const app = express();
 
@@ -36,7 +39,10 @@ app.use(
     session({
         resave: true,
         saveUninitialized: true,
-        secret: secrets.SESSION_SECRET
+        secret: secrets.SESSION_SECRET,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection
+        })
     })
 );
 app.use(passport.initialize());
