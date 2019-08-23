@@ -64,7 +64,7 @@ export const userDetail = async (req: Request, res: Response) => {
 };
 
 export const account = (req: Request, res: Response) => {
-    res.render("users/detail", { title: "Account" });
+    res.render("users/detail", { title: "Account", isAccount: true });
 };
 
 export const profile = (req: Request, res: Response) => {

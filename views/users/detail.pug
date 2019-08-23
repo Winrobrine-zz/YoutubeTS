@@ -3,5 +3,11 @@ extends ../layout
 block content
     .user-profile
         .user-profile__header
-            img.avatar(src=user.avatarUrl)
-            h4.profile__username=user.username
+            img.u-avatar(src=user.avatarUrl)
+            h4.user-profile__username=user.username
+        if isAccount
+            .user-profile__buttons
+                a(href=(routes.account + routes.profile))
+                    button Edit Profile
+                a(href=(routes.account + routes.password))
+                    button Change Password

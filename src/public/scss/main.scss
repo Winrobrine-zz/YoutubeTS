@@ -9,6 +9,7 @@
 
 @import "pages/home";
 @import "pages/videos/detail";
+@import "pages/users/detail";
 
 @import "lib/font-awesome/fontawesome";
 @import "lib/font-awesome/brands";
@@ -69,4 +70,10 @@ button.delete {
 button,
 input[type="submit"] {
     cursor: pointer;
+}
+
+.u-avatar {
+    height: 80px;
+    background-color: $red;
+    border-radius: 50%;
 }
