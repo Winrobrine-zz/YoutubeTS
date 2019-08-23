@@ -17,3 +17,12 @@ export const videoUpload = multer({
     ),
     fileFilter: (req, file, cb) => cb(null, file.mimetype.startsWith("video"))
 });
+
+export const avatarUpload = multer({
+    storage: new MulterAzureStorage(
+        Object.assign(azureStorage, {
+            containerName: "avatars"
+        })
+    ),
+    fileFilter: (req, file, cb) => cb(null, file.mimetype.startsWith("image"))
+});

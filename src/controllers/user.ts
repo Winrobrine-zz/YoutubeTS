@@ -4,6 +4,7 @@ import passport from "passport";
 import routes from "../routes";
 import { User } from "../models/User";
 import "../config/passport";
+import { MulterOutFile } from "multer-blob-storage";
 
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) return res.redirect(routes.index);
@@ -67,8 +68,31 @@ export const account = (req: Request, res: Response) => {
     res.render("users/detail", { title: "Account", isAccount: true });
 };
 
-export const profile = (req: Request, res: Response) => {
+export const getEditProfile = (req: Request, res: Response) => {
     res.render("account/profile", { title: "Profile" });
+};
+
+export const postEditProfile = async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.redirect(routes.account + routes.profile);
+    }
+
+    const username: string = req.body.username;
+    const file = req.file as MulterOutFile;
+
+    try {
+        const user = await User.findById(req.user.id);
+        user.username = username;
+        user.avatarUrl = file ? file.url.split("?")[0] : user.avatarUrl;
+        await user.save();
+        res.redirect(routes.account);
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.account + routes.profile);
+    }
 };
 
 export const password = (req: Request, res: Response) => {
