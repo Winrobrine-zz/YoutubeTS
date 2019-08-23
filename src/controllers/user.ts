@@ -57,7 +57,7 @@ export const userDetail = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.params.id);
         if (user) res.render("users/detail", { title: "User Detail", user });
-        res.redirect(routes.index);
+        else res.redirect(routes.index);
     } catch (err) {
         console.log(err);
         res.redirect(routes.index);
@@ -84,10 +84,9 @@ export const postProfile = async (req: Request, res: Response) => {
     const file = req.file as MulterOutFile;
 
     try {
-        const user = await User.findById(req.user.id);
-        user.username = username;
-        user.avatarUrl = file ? file.url.split("?")[0] : user.avatarUrl;
-        await user.save();
+        req.user.username = username;
+        req.user.avatarUrl = file ? file.url.split("?")[0] : req.user.avatarUrl;
+        await req.user.save();
         res.redirect(routes.account);
     } catch (err) {
         console.log(err);

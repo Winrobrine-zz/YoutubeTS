@@ -1,5 +1,7 @@
 import mongoose, { PassportLocalSchema } from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
+import { CommentDocument } from "./Comment";
+import { VideoDocument } from "./Video";
 
 export type UserDocument = mongoose.PassportLocalDocument & {
     username: string;
@@ -7,6 +9,8 @@ export type UserDocument = mongoose.PassportLocalDocument & {
     avatarUrl: string;
     githubId: string;
     googleId: string;
+    comments: CommentDocument[] | string[];
+    videos: VideoDocument[] | string[];
 };
 
 const userSchema = new mongoose.Schema({
@@ -14,7 +18,19 @@ const userSchema = new mongoose.Schema({
     email: String,
     avatarUrl: String,
     githubId: String,
-    googleId: String
+    googleId: String,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ],
+    videos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video"
+        }
+    ]
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });

@@ -35,13 +35,13 @@ passport.use(
                         return done();
                     }
 
-                    const user = await User.findById(req.user.id);
-                    user.githubId = profile.id;
-                    user.avatarUrl = user.avatarUrl || profile.photos[0].value;
-                    await user.save();
+                    req.user.githubId = profile.id;
+                    req.user.avatarUrl =
+                        req.user.avatarUrl || profile.photos[0].value;
+                    await req.user.save();
 
                     console.log("Github account has been linked.");
-                    done(null, user);
+                    done(null, req.user);
                 } catch (err) {
                     done(err);
                 }
@@ -100,13 +100,13 @@ passport.use(
                         return done();
                     }
 
-                    const user = await User.findById(req.user.id);
-                    user.googleId = profile.id;
-                    user.avatarUrl = user.avatarUrl || profile.photos[0].value;
-                    await user.save();
+                    req.user.googleId = profile.id;
+                    req.user.avatarUrl =
+                        req.user.avatarUrl || profile.photos[0].value;
+                    await req.user.save();
 
                     console.log("Google account has been linked.");
-                    done(null, user);
+                    done(null, req.user);
                 } catch (err) {
                     done(err);
                 }

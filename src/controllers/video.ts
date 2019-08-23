@@ -60,8 +60,12 @@ export const postUpload = async (req: Request, res: Response) => {
         const newVideo = await new Video({
             src: file.url.split("?")[0],
             title,
-            description
+            description,
+            creator: req.user.id
         }).save();
+
+        req.user.videos.push(newVideo.id);
+        await req.user.save();
 
         res.redirect(routes.videos + routes.videoDetail(newVideo.id));
     } catch (err) {
@@ -72,7 +76,7 @@ export const postUpload = async (req: Request, res: Response) => {
 
 export const detail = async (req: Request, res: Response) => {
     try {
-        const video = await Video.findById(req.params.id);
+        const video = await Video.findById(req.params.id).populate("creator");
         res.render("videos/detail", { title: video.title, video });
     } catch (err) {
         console.log(err);

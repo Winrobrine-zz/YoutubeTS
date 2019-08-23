@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { CommentDocument } from "./Comment";
+import { UserDocument } from "./User";
 
 export type VideoDocument = mongoose.Document & {
     src: string;
@@ -7,7 +8,8 @@ export type VideoDocument = mongoose.Document & {
     description: string;
     views: number;
     createdAt: Date;
-    comments: CommentDocument["_id"];
+    comments: CommentDocument[] | string[];
+    creator: UserDocument | string;
 };
 
 const videoSchema = new mongoose.Schema({
@@ -33,7 +35,12 @@ const videoSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
-    ]
+    ],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 });
 
 export const Video = mongoose.model<VideoDocument>("Video", videoSchema);
