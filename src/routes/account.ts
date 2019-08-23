@@ -14,7 +14,7 @@ router.get(routes.index, ensureLoggedIn(routes.login), userController.account);
 router.get(
     routes.profile,
     ensureLoggedIn(routes.login),
-    userController.getEditProfile
+    userController.getProfile
 );
 router.post(
     routes.profile,
@@ -32,13 +32,30 @@ router.post(
             }
         )
     ],
-    userController.postEditProfile
+    userController.postProfile
 );
 
 router.get(
     routes.password,
     ensureLoggedIn(routes.login),
-    userController.password
+    userController.getPassword
+);
+
+router.post(
+    routes.password,
+    ensureLoggedIn(routes.login),
+    [
+        check(
+            "newPassword",
+            "Password must be at least 4 characters long"
+        ).isLength({
+            min: 4
+        }),
+        check("confirmNewPassword", "Passwords do not match").custom(
+            (value, { req }) => value === req.body.newPassword
+        )
+    ],
+    userController.postPassword
 );
 
 export default router;
