@@ -34,6 +34,7 @@ router.get(
 );
 router.post(
     routes.editVideo(),
+    ensureLoggedIn(routes.login),
     [
         check("title", "Title cannot be blank")
             .not()

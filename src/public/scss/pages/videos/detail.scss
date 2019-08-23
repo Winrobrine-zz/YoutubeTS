@@ -16,6 +16,11 @@
             width: 100px;
             margin-bottom: 25px;
         }
+        .video-detail__author {
+            a {
+                color: #3498db;
+            }
+        }
         .video-detail__title,
         .video-detail__description,
         .video-detail__views {

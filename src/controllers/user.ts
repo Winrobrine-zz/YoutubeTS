@@ -55,7 +55,7 @@ export const logout = (req: Request, res: Response) => {
 
 export const userDetail = async (req: Request, res: Response) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate("videos");
         if (user) res.render("users/detail", { title: "User Detail", user });
         else res.redirect(routes.index);
     } catch (err) {
@@ -64,8 +64,18 @@ export const userDetail = async (req: Request, res: Response) => {
     }
 };
 
-export const account = (req: Request, res: Response) => {
-    res.render("users/detail", { title: "Account", isAccount: true });
+export const account = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(req.user.id).populate("videos");
+        res.render("users/detail", {
+            title: "Account",
+            user,
+            isAccount: true
+        });
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.index);
+    }
 };
 
 export const getProfile = (req: Request, res: Response) => {

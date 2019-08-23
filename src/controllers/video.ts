@@ -87,10 +87,16 @@ export const detail = async (req: Request, res: Response) => {
 export const getEdit = async (req: Request, res: Response) => {
     try {
         const video = await Video.findById(req.params.id);
+        if (video.creator.toString() !== req.user.id) {
+            return res.redirect(
+                routes.videos + routes.videoDetail(req.params.id)
+            );
+        }
+
         res.render("videos/edit", { title: `Edit ${video.title}`, video });
     } catch (err) {
         console.log(err);
-        res.redirect(routes.index);
+        res.redirect(routes.videos + routes.videoDetail(req.params.id));
     }
 };
 
@@ -99,6 +105,11 @@ export const postEdit = async (req: Request, res: Response) => {
 
     if (!errors.isEmpty()) {
         console.log(errors.array());
+        return res.redirect(routes.videos + routes.editVideo(req.params.id));
+    }
+
+    const video = await Video.findById(req.params.id);
+    if (video.creator.toString() !== req.user.id) {
         return res.redirect(routes.videos + routes.editVideo(req.params.id));
     }
 
@@ -119,6 +130,13 @@ export const postEdit = async (req: Request, res: Response) => {
 
 export const remove = async (req: Request, res: Response) => {
     try {
+        const video = await Video.findById(req.params.id);
+        if (video.creator.toString() !== req.user.id) {
+            return res.redirect(
+                routes.videos + routes.videoDetail(req.params.id)
+            );
+        }
+
         await Video.findByIdAndDelete(req.params.id);
         res.redirect(routes.index);
     } catch (err) {
