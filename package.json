@@ -10,16 +10,23 @@
     "license": "MIT",
     "scripts": {
         "start": "node dist/server.js",
-        "build": "npm run build-scss && npm run build-ts && npm run copy-static-assets",
-        "watch-node": "nodemon dist/server.js",
-        "watch": "concurrently -k -p \"[{name}]\" -n \"Scss,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" npm:watch-scss npm:watch-ts npm:watch-node",
-        "build-ts": "tsc",
-        "watch-ts": "tsc -w",
-        "build-scss": "node-sass src/public/scss/main.scss dist/public/css/main.css",
-        "watch-scss": "node-sass -w src/public/scss/main.scss dist/public/css/main.css",
+        "watch:node": "nodemon dist/server.js",
+        "build": "npm run build:scss && npm run build:ts && npm run copy-static-assets",
+        "watch": "concurrently -k -p \"[{name}]\" -n \"Scss,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" npm:watch:scss npm:watch:ts npm:watch:node",
+        "build:ts": "npm run build:types && npm run build:commonjs && npm run build:browser",
+        "watch:ts": "npm run watch:types && npm run watch:commonjs && npm run build:browser",
+        "build:types": "tsc --emitDeclarationOnly",
+        "watch:types": "tsc -w --emitDeclarationOnly",
+        "build:commonjs": "babel src --out-dir dist --ignore \"src/public\" --extensions \".ts,.tsx\" --source-maps inline",
+        "watch:commonjs": "babel src -w --out-dir dist --ignore \"src/public\" --extensions \".ts,.tsx\" --source-maps inline",
+        "build:browser": "ts-node preBuildBrowser.ts && browserify -p tsify -t [ babelify --extensions .ts ] src/public/ts/main.ts > dist/public/js/main.js",
+        "watch:browser": "",
+        "build:scss": "node-sass src/public/scss/main.scss dist/public/css/main.css",
+        "watch:scss": "node-sass -w src/public/scss/main.scss dist/public/css/main.css",
         "copy-static-assets": "ts-node copyStaticAssets.ts"
     },
     "dependencies": {
+        "@babel/polyfill": "^7.4.4",
         "body-parser": "^1.19.0",
         "connect-ensure-login": "^0.1.1",
         "connect-mongo": "^3.0.0",
@@ -42,6 +49,14 @@
         "winston": "^3.2.1"
     },
     "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-typescript": "^7.3.3",
+        "@types/babelify": "^7.3.6",
         "@types/body-parser": "^1.17.1",
         "@types/connect-ensure-login": "^0.1.5",
         "@types/connect-mongo": "0.0.43",
@@ -62,8 +77,12 @@
         "@types/winston": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^2.0.0",
         "@typescript-eslint/parser": "^2.0.0",
+        "babelify": "^10.0.0",
+        "browserify": "^16.5.0",
         "node-sass": "^4.12.0",
-        "nodemon": "^1.19.1",
-        "shelljs": "^0.8.3"
+        "shelljs": "^0.8.3",
+        "tsify": "^4.0.1",
+        "typescript": "^3.5.3",
+        "watchify": "^3.11.1"
     }
 }

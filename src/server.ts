@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import errorHandler from "errorhandler";
 
 import app from "./app";
