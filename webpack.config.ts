@@ -1,5 +1,6 @@
 import path from "path";
 import webpack from "webpack";
+import autoprefixer from "autoprefixer";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const config: webpack.Configuration = {
@@ -33,6 +34,12 @@ const config: webpack.Configuration = {
                         }
                     },
                     "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: [autoprefixer()]
+                        }
+                    },
                     "sass-loader"
                 ]
             },
