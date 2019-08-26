@@ -78,9 +78,11 @@
         "@types/passport-local": "^1.0.33",
         "@types/passport-local-mongoose": "^4.0.12",
         "@types/shelljs": "^0.8.5",
+        "@types/video.js": "^7.2.14",
         "@types/webpack": "^4.39.1",
         "@types/winston": "^2.4.4",
         "autoprefixer": "^9.6.1",
+        "axios": "^0.19.0",
         "babel-loader": "^8.0.6",
         "css-loader": "^3.2.0",
         "file-loader": "^4.2.0",
@@ -91,6 +93,7 @@
         "shelljs": "^0.8.3",
         "ts-node": "^8.3.0",
         "typescript": "^3.5.3",
+        "video.js": "^7.6.0",
         "webpack": "^4.39.2",
         "webpack-cli": "^3.3.7"
     }

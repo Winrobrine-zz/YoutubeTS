@@ -144,3 +144,15 @@ export const remove = async (req: Request, res: Response) => {
         res.redirect(routes.videos + routes.videoDetail(req.params.id));
     }
 };
+
+export const updateView = async (req: Request, res: Response) => {
+    try {
+        const video = await Video.findById(req.params.id);
+        video.views++;
+        await video.save();
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+}

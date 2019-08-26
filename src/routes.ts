@@ -23,6 +23,9 @@ const GITHUB_CALLBACK = "/github/callback";
 const GOOGLE = "/google";
 const GOOGLE_CALLBACK = "/google/callback";
 
+const API = "/api";
+const VIDEO_VIEW = "/videos/:id/view";
+
 const routes = {
     index: INDEX,
     signup: SIGNUP,
@@ -55,7 +58,12 @@ const routes = {
     github: GITHUB,
     githubCallback: GITHUB_CALLBACK,
     google: GOOGLE,
-    googleCallback: GOOGLE_CALLBACK
+    googleCallback: GOOGLE_CALLBACK,
+    api: API,
+    videoView: (id?: string) => {
+        if (id) return `/videos/${id}/view`;
+        return VIDEO_VIEW;
+    }
 };
 
 export default routes;

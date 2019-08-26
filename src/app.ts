@@ -11,6 +11,7 @@ import * as secrets from "./utils/secrets";
 
 import routes from "./routes";
 import accountRouter from "./routes/account";
+import apiRouter from "./routes/api";
 import authRouter from "./routes/auth";
 import homeRouter from "./routes/index";
 import userRouter from "./routes/user";
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(routes.account, accountRouter);
+app.use(routes.api, apiRouter);
 app.use(routes.auth, authRouter);
 app.use(routes.index, homeRouter);
 app.use(routes.users, userRouter);

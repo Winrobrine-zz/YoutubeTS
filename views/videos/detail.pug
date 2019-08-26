@@ -3,7 +3,7 @@ extends ../layout
 block content
     .video-detail
         .video-detail__player
-            video.video-js.vjs-big-play-centered(controls, preload="auto", data-setup="{}")
+            video#youtsplayer.video-js.vjs-big-play-centered(controls, preload="auto", data-setup="{}")
                 source(src=video.src)
                 p.vjs-no-js
                     |To view this video please enable JavaScript, and consider upgrading to a web browser that
