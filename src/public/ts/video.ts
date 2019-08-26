@@ -21,6 +21,11 @@ function init() {
         player.play();
         player.on("ended", onVideoEnded);
     });
+
+    const script = document.createElement("script");
+    script.src = "https://youtubets.disqus.com/embed.js";
+    script.setAttribute("data-timestamp", (+new Date()).toString());
+    (document.head || document.body).appendChild(script);
 }
 
 if (document.getElementById("youtsplayer")) {
