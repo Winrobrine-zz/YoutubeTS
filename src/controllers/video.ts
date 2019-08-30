@@ -18,7 +18,13 @@ export const search = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.index);
     }
 
@@ -43,7 +49,13 @@ export const postUpload = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.videos + routes.upload);
     }
 
@@ -52,7 +64,7 @@ export const postUpload = async (req: Request, res: Response) => {
     const file = req.file as MulterOutFile;
 
     if (!file) {
-        console.log("Only video files are allowed");
+        req.flash("error", "Only video files are allowed");
         return res.redirect(routes.videos + routes.upload);
     }
 
@@ -66,7 +78,7 @@ export const postUpload = async (req: Request, res: Response) => {
 
         req.user.videos.push(newVideo.id);
         await req.user.save();
-
+        req.flash("success", "New video has been uploaded.");
         res.redirect(routes.videos + routes.videoDetail(newVideo.id));
     } catch (err) {
         console.log(err);
@@ -85,18 +97,18 @@ export const detail = async (req: Request, res: Response) => {
 };
 
 export const getEdit = async (req: Request, res: Response) => {
+    const videoId = req.params.id;
+
     try {
-        const video = await Video.findById(req.params.id);
+        const video = await Video.findById(videoId);
         if (video.creator.toString() !== req.user.id) {
-            return res.redirect(
-                routes.videos + routes.videoDetail(req.params.id)
-            );
+            return res.redirect(routes.videos + routes.videoDetail(videoId));
         }
 
         res.render("videos/edit", { title: `Edit ${video.title}`, video });
     } catch (err) {
         console.log(err);
-        res.redirect(routes.videos + routes.videoDetail(req.params.id));
+        res.redirect(routes.videos + routes.videoDetail(videoId));
     }
 };
 
@@ -104,44 +116,54 @@ export const postEdit = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.videos + routes.editVideo(req.params.id));
     }
 
-    const video = await Video.findById(req.params.id);
+    const videoId = req.params.id;
+    const video = await Video.findById(videoId);
+
     if (video.creator.toString() !== req.user.id) {
-        return res.redirect(routes.videos + routes.editVideo(req.params.id));
+        return res.redirect(routes.videos + routes.editVideo(videoId));
     }
 
     const title: string = req.body.title;
     const description: string = req.body.description;
 
     try {
-        const video = await Video.findByIdAndUpdate(req.params.id, {
+        const video = await Video.findByIdAndUpdate(videoId, {
             title,
             description
         });
+        req.flash("success", "Video information has been updated.");
         res.redirect(routes.videos + routes.videoDetail(video.id));
     } catch (err) {
         console.log(err);
-        res.redirect(routes.videos + routes.editVideo(req.params.id));
+        res.redirect(routes.videos + routes.editVideo(videoId));
     }
 };
 
 export const remove = async (req: Request, res: Response) => {
+    const videoId = req.params.id;
+
     try {
-        const video = await Video.findById(req.params.id);
+        const video = await Video.findById(videoId);
         if (video.creator.toString() !== req.user.id) {
-            return res.redirect(
-                routes.videos + routes.videoDetail(req.params.id)
-            );
+            return res.redirect(routes.videos + routes.videoDetail(videoId));
         }
 
-        await Video.findByIdAndDelete(req.params.id);
+        await Video.findByIdAndDelete(videoId);
+        req.flash("success", "Video has been deleted.");
         res.redirect(routes.index);
     } catch (err) {
         console.log(err);
-        res.redirect(routes.videos + routes.videoDetail(req.params.id));
+        res.redirect(routes.videos + routes.videoDetail(videoId));
     }
 };
 
@@ -155,4 +177,4 @@ export const updateView = async (req: Request, res: Response) => {
         console.log(err);
         res.sendStatus(400);
     }
-}
+};

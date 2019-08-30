@@ -1,0 +1,17 @@
+include ../mixins/message
+
+if messages.error
+    +message({
+        type: "error",
+        text: messages.error
+    })
+if messages.info
+    +message({
+        type: "info",
+        text: messages.info
+    })
+if messages.success
+    +message({
+        type: "success",
+        text: messages.success
+    })

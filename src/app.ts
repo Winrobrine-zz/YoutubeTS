@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import flash from "express-flash";
 import helmet from "helmet";
 import logger from "morgan";
 import mongo from "connect-mongo";
@@ -22,7 +23,10 @@ const MongoStore = mongo(session);
 const app = express();
 
 mongoose
-    .connect(secrets.MONGODB_URI, { useNewUrlParser: true })
+    .connect(secrets.MONGODB_URI, {
+        useNewUrlParser: true,
+        useFindAndModify: false
+    })
     .then(() => {})
     .catch(err => {
         console.log(
@@ -36,6 +40,7 @@ app.set("view engine", "pug");
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(flash());
 app.use(logger("dev"));
 app.use(
     session({

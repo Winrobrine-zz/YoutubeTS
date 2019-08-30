@@ -29,7 +29,8 @@ passport.use(
                         githubId: profile.id
                     });
                     if (userExist) {
-                        console.log(
+                        req.flash(
+                            "error",
                             "There is already a Github account that belongs to you. Sign in with that account or delete it, then link it with your current account."
                         );
                         return done();
@@ -40,7 +41,7 @@ passport.use(
                         req.user.avatarUrl || profile.photos[0].value;
                     await req.user.save();
 
-                    console.log("Github account has been linked.");
+                    req.flash("info", "Github account has been linked.");
                     done(null, req.user);
                 } catch (err) {
                     done(err);
@@ -58,7 +59,8 @@ passport.use(
                         email: profile.emails[0].value
                     });
                     if (emailExist) {
-                        console.log(
+                        req.flash(
+                            "error",
                             "There is already an account using this email address. Sign in to that account and link it with Github manually from Account Settings."
                         );
                         return done();
@@ -94,7 +96,8 @@ passport.use(
                         googleId: profile.id
                     });
                     if (userExist) {
-                        console.log(
+                        req.flash(
+                            "error",
                             "There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account."
                         );
                         return done();
@@ -105,7 +108,7 @@ passport.use(
                         req.user.avatarUrl || profile.photos[0].value;
                     await req.user.save();
 
-                    console.log("Google account has been linked.");
+                    req.flash("info", "Google account has been linked.");
                     done(null, req.user);
                 } catch (err) {
                     done(err);
@@ -123,7 +126,8 @@ passport.use(
                         email: profile.emails[0].value
                     });
                     if (emailExist) {
-                        console.log(
+                        req.flash(
+                            "error",
                             "There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings."
                         );
                         return done();

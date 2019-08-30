@@ -30,7 +30,7 @@ const config: webpack.Configuration = {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             publicPath: "../",
-                            hmr: process.env.NODE_ENV === "development"
+                            hmr: process.env.NODE_ENV !== "production"
                         }
                     },
                     "css-loader",

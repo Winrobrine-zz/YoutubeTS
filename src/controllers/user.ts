@@ -14,7 +14,9 @@ export const getLogin = (req: Request, res: Response) => {
 
 export const postLogin = passport.authenticate("local", {
     failureRedirect: routes.login,
-    successReturnToOrRedirect: routes.index
+    successReturnToOrRedirect: routes.index,
+    failureFlash: "You failed logged in.",
+    successFlash: "Success! You are logged in."
 });
 
 export const getSignup = (req: Request, res: Response) => {
@@ -31,7 +33,13 @@ export const postSignup = async (
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.signup);
     }
 
@@ -86,7 +94,13 @@ export const postProfile = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.account + routes.profile);
     }
 
@@ -97,6 +111,7 @@ export const postProfile = async (req: Request, res: Response) => {
         req.user.username = username;
         req.user.avatarUrl = file ? file.url.split("?")[0] : req.user.avatarUrl;
         await req.user.save();
+        req.flash("success", "Profile information has been updated.");
         res.redirect(routes.account);
     } catch (err) {
         console.log(err);
@@ -112,7 +127,13 @@ export const postPassword = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        req.flash(
+            "error",
+            errors
+                .array()
+                .map(e => e.msg)
+                .join("<br/>")
+        );
         return res.redirect(routes.account + routes.password);
     }
 
@@ -121,6 +142,7 @@ export const postPassword = async (req: Request, res: Response) => {
 
     try {
         await req.user.changePassword(oldPassword, newPassword);
+        req.flash("success", "Password has been changed.");
         res.redirect(routes.account);
     } catch (err) {
         console.log(err);
