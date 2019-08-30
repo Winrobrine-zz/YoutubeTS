@@ -10,7 +10,7 @@ block content
                     a(href="https://videojs.com/html5-video-support/", target="_blank")
                         |supports HTML5 video
         .video-detail__info
-            if video.creator.id === user.id
+            if user && video.creator.id === user.id
                 a(href=(routes.videos + routes.editVideo(video.id)))
                     button Edit video
             h5.video-detail__title=video.title
