@@ -20,9 +20,9 @@
 | .babelrc            | Babel 설정 파일입니다.                                                                                      |
 | .env.example        | Database URL, Session Secret, Storage Key 등 앱에 필요한 중요 정보들의 샘플 형식이 저장되어있는 파일입니다. |
 | .eslintrc.json      | Eslint 설정 파일입니다.                                                                                     |
-| .clean.ts           | 소스코드를 빌드하기 전에 dist 폴더를 삭제하는 코드이며 빌드하기 전에 자동으로 실행됩니다.                   |
-| .tsconfig.json      | TypeScript 컴파일러 설정 파일입니다.                                                                        |
-| .webpack.config.ts  | Webpack 설정 파일입니다.                                                                                    |
+| clean.ts           | 소스코드를 빌드하기 전에 dist 폴더를 삭제하는 코드이며 빌드하기 전에 자동으로 실행됩니다.                   |
+| tsconfig.json      | TypeScript 컴파일러 설정 파일입니다.                                                                        |
+| webpack.config.ts  | Webpack 설정 파일입니다.                                                                                    |
 
 ## NPM 스크립트
 
